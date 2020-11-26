@@ -26,18 +26,14 @@ function start() {
 }
 // функция запроса у пользователя и подсчета обязательных месячных расходов
 function getExpensesMonth() {
-
-  let i = 0,
-      sum,
+  let sum,
       sumExpensesMonth =0,
       expenses = '';
-  
-  do {
 
-    expenses = prompt('Введите обязательную ' + (i + 1) + ' статью расходов: ');
-    
+  for (let i = 1; i < 3; i++) {
+    expenses = prompt('Введите обязательную ' + i  + '-ю статью расходов: ');
+   
     if (expenses !== null) {
-      
       sum = prompt(`Во сколько обойдутся ${expenses} ?: `);
  
       while (!isNumber(sum)) {
@@ -45,11 +41,8 @@ function getExpensesMonth() {
       }
 
       sumExpensesMonth += +sum;
-      i++;
-    
     }
-
-  } while (expenses !== null);
+  }    
 
   return sumExpensesMonth;
 
