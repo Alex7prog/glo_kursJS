@@ -45,7 +45,7 @@ let appData = {
     deposit: false,
     percentDeposit: 0,
     moneyDeposit: 0,
-    
+    // расчеты и вывод результатов в форму по кнопке Рассчитать
     start: function() {
 
       appData.budget = +salaryAmount.value;
@@ -59,7 +59,7 @@ let appData = {
 
       appData.showResult();
     },
-
+    //вывод результатов в форму
     showResult: function() {
       budgetMonthValue.value = appData.budgetMonth;
       budgetDayValue.value = appData.budgetDay;
@@ -69,7 +69,7 @@ let appData = {
       targetMonthValue.value = appData.getTargetMonth();
       incomePeriodValue.value = appData.calcPeriodSavedMoney();
     },
-
+    // обязательные расходы - добавление новых
     addExpensesBlock: function() {
       let cloneExpensesItem = expensesItems[0].cloneNode(true);
       expensesItems[0].parentNode.insertBefore(cloneExpensesItem, btnPlusExpenses);
@@ -79,7 +79,7 @@ let appData = {
         btnPlusExpenses.style.display = "none";
       }
     },
-
+    // обязательные расходы
     getExpenses: function() {
       expensesItems.forEach(function(item) {
       let itemExpenses = item.querySelector('.expenses-title').value,
@@ -90,7 +90,7 @@ let appData = {
       }
       });
     },
-
+    // дополнительный доход - добавление нового
     addIncomeBlock: function() {
       let cloneIncomeItem = incomeItems[0].cloneNode(true);
       incomeItems[0].parentNode.insertBefore(cloneIncomeItem, btnPlusIncome);
@@ -100,7 +100,7 @@ let appData = {
         btnPlusIncome.style.display = "none";
       }
     },
-
+    // дополнительный доход
     getIncome: function() {
       incomeItems.forEach(function(item) {
       let itemIncome = item.querySelector('.income-title').value,
@@ -115,7 +115,7 @@ let appData = {
       appData.incomeMonth += +appData.income[key];
     }
     },
-
+    // возможные расходы
     getAddExpenses: function() {
       let addExpenses = addExpensesItem.value.split(',');
       addExpenses.forEach(function(item) {
@@ -124,7 +124,7 @@ let appData = {
         }
       });
     },
-
+    // возможный доход
     getAddIncome: function() {
       addIncomeItem.forEach(function(item) {
         let itemValue = item.value.trim();
@@ -146,8 +146,8 @@ let appData = {
     },
     // подсчет срока достижения цели
     getTargetMonth: function () {
+
       return Math.ceil(targetAmount.value / appData.budgetMonth);
-      //return Math.ceil(appData.mission / appData.budgetMonth);
     },
     // определение уровня доходов
     getStatusIncome: function () {
@@ -176,7 +176,7 @@ let appData = {
         } while (!isNumber(appData.moneyDeposit));
       }
     },
-
+    // проверка ввода значения - Месячный доход
     checkSalaryAmountValue: function() {
       if ((salaryAmount.value !== '') && isNumber(salaryAmount.value)) {
         btnStart.addEventListener('click', appData.start);
@@ -184,15 +184,15 @@ let appData = {
         btnStart.removeEventListener('click', appData.start);
       }
     },
-
+    // индикатор Период расчета
     showPeriodValue: function() {
       periodAmount.textContent = periodSelect.value;
     },
     // доход за период
     calcPeriodSavedMoney: function() {
-      //return appData.budgetMonth * appData.period;
-      //console.log(periodSelect);
-      return appData.budgetMonth * periodSelect.value;
+      if (appData.budget !== 0){
+        return (incomePeriodValue.value = appData.budgetMonth * periodSelect.value);
+      }
     }
 
   }; // end of appData{}
@@ -206,20 +206,4 @@ btnPlusIncome.addEventListener('click', appData.addIncomeBlock);
 
 periodSelect.addEventListener('input', appData.showPeriodValue);
 
-periodSelect.addEventListener('input', appData.showResult);
-
-
-//appData{}
-console.log(`\nНаша программа включает в себя данные:`);
-for (const key in appData) {
-  console.dir(key + ': ' + appData[key]);
-}
-
-//Возможные расходы (addExpenses) выводим строкой в консоль 
-//каждое слово с большой буквы слова разделены запятой и пробелом
-let formatStr ='';
-for (let i = 0; i < appData.addExpenses.length; i++) {
-  formatStr = formatStr + ', ' + appData.addExpenses[i][0].toUpperCase() + appData.addExpenses[i].slice(1);
-}
-console.log('formatStr: ', formatStr.slice(2));
-
+periodSelect.addEventListener('input', appData.calcPeriodSavedMoney);
