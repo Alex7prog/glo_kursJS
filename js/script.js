@@ -84,7 +84,7 @@ let appData = {
               inputEmpty = true;
             }
       });
-
+      console.log('expensesItems: ', expensesItems);
       if (!inputEmpty) {
         let cloneExpensesItem = expensesItems[0].cloneNode(true);
         // очищаем значения нового элемента полученных при клонировании
@@ -93,11 +93,23 @@ let appData = {
         
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, btnPlusExpenses);
         expensesItems = document.querySelectorAll('.expenses-items')
+        console.log('expensesItems: ', expensesItems);
         
         if  (expensesItems.length === 3) {
           btnPlusExpenses.style.display = "none";
         }
-      } else {
+
+        // валидация данных
+          expensesItems[expensesItems.length-1].
+            querySelector('[placeholder="Сумма"]').addEventListener('keyup', function(){
+              this.value = this.value.replace(/[^\d]/g, '');
+            });
+          expensesItems[expensesItems.length-1].
+            querySelector('[placeholder="Наименование"]').addEventListener('keyup', function(){
+              this.value = this.value.replace(/[^[А-Яа-яЁё\s\,\.\:\-\;]+$/g, '');
+            });
+
+          } else {
         alert('Есть не заполненные поля. Введите данные');
            
       }
@@ -136,6 +148,18 @@ let appData = {
         if  (incomeItems.length === 3) {
           btnPlusIncome.style.display = "none";
         }
+        
+        // валидация данных
+        incomeItems[incomeItems.length-1].
+        querySelector('[placeholder="Сумма"]').addEventListener('keyup', function(){
+          this.value = this.value.replace(/[^\d]/g, '');
+        });
+        incomeItems[incomeItems.length-1].
+        querySelector('[placeholder="Наименование"]').addEventListener('keyup', function(){
+          this.value = this.value.replace(/[^[А-Яа-яЁё\s\,\.\:\-\;]+$/g, '');
+        });
+
+
       } else {
         alert('Есть не заполненные поля. Введите данные');
       }
@@ -250,10 +274,12 @@ periodSelect.addEventListener('input', appData.calcPeriodSavedMoney);
 
 // разрешен ввод только цифр
 inputPlaceholderSum.forEach(function(item) {
-  item.addEventListener('keyup', function(){
+  item.addEventListener('keyup', function(event){
     this.value = this.value.replace(/[^\d]/g, '');
+    event.preventDefault();
+    });
   });
-});
+
 
 // разрешен ввод кириллицы, пробелов, знаков припинания
 inputPlaceholderName.forEach(function(item) {
@@ -261,7 +287,5 @@ inputPlaceholderName.forEach(function(item) {
     this.value = this.value.replace(/[^[А-Яа-яЁё\s\,\.\:\-\;]+$/g, ''); 
   });
 });
-
-
 
 
