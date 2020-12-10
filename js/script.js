@@ -25,8 +25,6 @@ class Second extends First {
 
 }
 
-const cl1 = new First();
 const cl2 = new Second();
 
-cl1.hello();
 cl2.hello();
